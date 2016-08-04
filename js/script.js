@@ -1,4 +1,4 @@
-
+// event listener to respond to "Show another quote" button clicks
 // when user clicks anywhere on the button, the "printQuote" function is called
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
 
@@ -40,6 +40,8 @@ var quotes = [
 }
 ];
 
+autoSwitch(); //activates the autoSwitch function if the user doesn't click the "get new quote botton."
+
 //Randomly generates a quote from the "quotes" object array.
 function getRandomQuote() {
     return quotes[Math.floor(Math.random() * quotes.length)];
@@ -48,7 +50,21 @@ function getRandomQuote() {
 //Defining background colors outside of printQuote() function so that .push and .shift can be used to cycle through colors without the values being reset each time the function is called.
 var backgroundColors = ['#962D3E', '#343642', '#979C9C', '#DEC07A', '#348899'];
 
+var timeoutID;	//create global setTimeout variable
+
+//autoSwitch function changes the quote every 10 seconds.
+function autoSwitch(){
+	timeoutID = window.setTimeout(printQuote, 10000);
+}
+
+//resetAutoSwitch resets the time interval of the autoSwitch function back to zero.
+function resetAutoSwitch(){
+	window.clearTimeout(timeoutID);
+}
+
 function printQuote() {
+
+resetAutoSwitch();
 
 //Assigns random number to displayQuote variable
 		var displayQuote = getRandomQuote();
@@ -64,10 +80,13 @@ function printQuote() {
 
 //Outpoops full string to proper location in HTML
 		document.getElementById('quote-box').innerHTML = htmlQuoteString;
-}
-
 
 //Changes the background color on button click. Cycles through five different colors.
 
 	document.getElementById('body').style.background = backgroundColors[0];
 	backgroundColors.push(backgroundColors.shift());
+
+//Automatically picks a new quote and background after 30 seconds
+autoSwitch();
+
+}
