@@ -6,45 +6,53 @@ var quotes = [
 {
 	quote: "Be a yardstick of quality.",
 	source: "Steve Jobs",
-	displayed: "no"
+	tags: ,
+	displayable: true
 },
 {
 	quote: "Innovation distinguishes between a leader and a follower.",
 	source: "Steve Jobs",
-	displayed: "no"
+	tags: ,
+	displayable: true
 },
 {
 	quote: "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time.",
 	source: "Thomas Edison",
-	displayed: "no"
+	tags: ,
+	displayable: true
 },
 {
 	quote: "If you want to change the world, go home and love your family.",
 	source: "Mother Teresa",
-	displayed: "no"
+	tags: ,
+	displayable: true
 },
 {
 	quote: "Good is the enemy of great.",
 	source: "Jim Collins",
 	citation: "Good to Great",
 	year: "2009",
-	displayed: "no"
+	tags: ,
+	displayable: true
 },
 {
 	quote: "Life is fragile. We're not guaranteed a tomorrow so give it everything you've got.",
 	source: "Tim Cook",
 	year: "2000",
-	displayed: "no"
+	tags: ,
+	displayable: true
 },
 {
 	quote: "Some people want it to happen, some wish it would happen, others make it happen.",
 	source: "Michael Jordan",
-	displayed: "no"
+	tags: ,
+	displayable: true
 },
 {
 	quote: "Talent wins games, but teamwork and intelligence wins championships.",
 	source: "Michael Jordan",
-	displayed: "no"
+	tags: ,
+	displayable: true
 }
 ];
 
@@ -56,8 +64,6 @@ function getRandomQuote() {
     return quotes[Math.floor(Math.random() * quotes.length)];
 }
 
-// defining background colors outside of printQuote() function so that .push and .shift can be used to cycle through colors without the values being reset each time the function is called.
-var backgroundColors = ['#962D3E', '#343642', '#979C9C', '#DEC07A', '#348899'];
 
 var timeoutID;	//create global setTimeout variable
 
@@ -80,7 +86,7 @@ function printQuote() {
 			//Assigns random number to the displayQuote variable
 			var displayQuote = getRandomQuote();
 
-			if(displayQuote.displayed === "no"){
+			if(displayQuote.displayable === true){
 
 			    var htmlQuoteString = '<p class="quote">' + displayQuote.quote + '</p>' + '<p class="source">' + displayQuote.source;
 
@@ -96,28 +102,33 @@ function printQuote() {
 					document.getElementById('quote-box').innerHTML = htmlQuoteString;
 
 					//Changes the background color on button click. Cycles through five different colors.
-					document.getElementById('body').style.background = backgroundColors[0];
+					// defining background colors outside of printQuote() function so that .push and .shift can be used to cycle through colors without the values being reset each time the function is called.
+					var backgroundColors = ['#4D505B', '#CF4858', '#16A79D', '#8068B', '#F4AC42'];
+					document.getElementById('body').style.background = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+
+					/*
 					backgroundColors.push(backgroundColors.shift());
+					*/
 
-					displayQuote.displayed = "yes";
+					displayQuote.displayable = false;
+					counter += 1; //Advances the counter each time the function is run. Once counter is equal to the amount of quotes displayed, all quotes are reset to be displayed again.
+					autoSwitch(); //Automatically picks a new quote and background after 30 seconds
 
-				 	autoSwitch(); //Automatically picks a new quote and background after 30 seconds
-					counter += 1;
 					console.log('PRINTED ' + displayQuote.quote + '.');
 					console.log('COUNTER IS ' + counter);
+
 		} else if (counter < quotes.length){
-			console.log('SKIPPED ' + displayQuote.quote);
-			console.log('COUNTER IS ' + counter);
-			printQuote();
-		} else {
-			console.log("Everything has been printed.");
-				for(i=0; i < quotes.length; i+=1){
-            quotes[i].displayed = 'no';
-						console.log("Upddated DISPLAYED property");
-						counter = 0;
-				}
-				console.log("THE LOOP HAS FINISHED!");
+				console.log('SKIPPED ' + displayQuote.quote);
+				console.log('COUNTER IS ' + counter);
 				printQuote();
+
+		} else {
+				for(var i=0; i < quotes.length; i+=1){
+            quotes[i].displayable = true;
+						counter = 0;
+					}
+			console.log("THE LOOP HAS FINISHED!");
+			printQuote();
 		}
 
 }
