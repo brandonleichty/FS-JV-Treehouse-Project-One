@@ -2,6 +2,8 @@
 // when user clicks anywhere on the button, the "printQuote" function is called
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
 
+
+// below is an objet array with the quotes to be displayed.
 var quotes = [
 {
 	quote: "Everyone talks about building a relationship with your customer. I think you build one with your employees first.",
@@ -56,28 +58,46 @@ var quotes = [
 }
 ];
 
-// function getRandomQuote randomly generates and returns a quote from the "quotes" object array.
+//---GLOBAL VARIABLES---//
+var backgroundColors = ['#4D505B','#CF4858','#16A79D','#80628B','#F4AC42'];
+var counter = 0;
+var lastColor;
+
+//---FUNCTIONS---//
+
+// getRandomQuote randomly generates and returns a quote from the "quotes" object array.
 function getRandomQuote() {
     return quotes[Math.floor(Math.random() * quotes.length)];
 }
 
+// randomColorGenerator returns a random number (that is not greater than the number of background colors).
 function randomColorGenerator() {
 		return Math.floor(Math.random() * backgroundColors.length);
 }
 
-// this section adds the functions that control how often the quote automatically changes (if the user doesn't press "show new quote")
-//
+// autoSwitch controls how often the quote automatically changes (if the user doesn't press "show new quote"). It's currently set to 10s.
 var timeoutID;
 function autoSwitch(){
 	timeoutID = window.setTimeout(printQuote, 10000);
 }
+// resets/clears the tiemout duration
 function resetAutoSwitch(){
 	window.clearTimeout(timeoutID);
 }
 
-var counter = 0;
+// randomColorPicker randomly picks a background color and checks to make sure the random color isn't the previously displayed color.
+function randomColorPicker(){
 
-var backgroundColors = ['#4D505B','#CF4858','#16A79D','#80628B','#F4AC42'];
+			var randomColor = randomColorGenerator();
+
+			if(randomColor !== lastColor){
+			document.getElementById('body').style.background = backgroundColors[randomColor];
+			lastColor = randomColor;
+		} else {
+			randomColorPicker();
+		}
+}
+
 
 function printQuote() {
 
@@ -100,53 +120,24 @@ function printQuote() {
 
 					//Outpoops full string to proper location in HTML
 					document.getElementById('quote-box').innerHTML = htmlQuoteString;
-					randomColorPicker()
-
-					/*
-					backgroundColors.push(backgroundColors.shift());
-					*/
+					randomColorPicker();
 
 					quoteToDisplay.displayable = false;
-					counter += 1; //Advances the counter each time the function is run. Once counter is equal to the amount of quotes displayed, all quotes are reset to be displayed again.
-					autoSwitch(); //Automatically picks a new quote and background after 30 seconds
-
-				//	console.log('PRINTED ' + quoteToDisplay.quote + '.');
-				//	console.log('COUNTER IS ' + counter);
+					counter += 1; // advances the counter each time the function is run. Once counter is equal to the amount of quotes displayed, all quotes are reset to be displayed again.
+					autoSwitch(); // automatically picks a new quote and background after 10 seconds
 
 		} else if (counter < quotes.length){
-				//console.log('SKIPPED ' + quoteToDisplay.quote);
-				//console.log('COUNTER IS ' + counter);
-				printQuote();
+				printQuote(); // if randomly selected color has already been displayed
 
-		} else {
+		} else { // resets each quotes "displayable" property to "true" after all quotes have been displayed.
 				for(var i=0; i < quotes.length; i+=1){
             quotes[i].displayable = true;
 						counter = 0;
-					}
-
-			printQuote();
-		}
+						}
+				printQuote();
+			}
 
 }
 
 // calls the printQuote function upon page load
 printQuote();
-
-
-function randomColorGenerator() {
-		return Math.floor(Math.random() * backgroundColors.length);
-}
-
-var lastColor;
-
-function randomColorPicker(){
-
-			var randomColor = randomColorGenerator();
-
-			if(randomColor !== lastColor){
-			document.getElementById('body').style.background = backgroundColors[randomColor];
-			lastColor = randomColor;
-		} else {
-			randomColorPicker();
-		}
-}
