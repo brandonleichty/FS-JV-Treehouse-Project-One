@@ -3,7 +3,7 @@
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
 
 
-// below is an objet array with the quotes to be displayed.
+// objet array with the quotes to be displayed.
 var quotes = [
 {
 	quote: "Everyone talks about building a relationship with your customer. I think you build one with your employees first.",
@@ -14,6 +14,8 @@ var quotes = [
 {
 	quote: "Innovation distinguishes between a leader and a follower.",
 	source: "Steve Jobs",
+	citation: "The Innovation Secrets of Steve Jobs",
+	year: "2001",
 	tags: "entrepreneurship",
 	displayable: true
 },
@@ -32,15 +34,15 @@ var quotes = [
 {
 	quote: "An organization is not truly great if it cannot be great without you.",
 	source: "Jim Collins",
-	citation: "Good to Great",
-	year: "2009",
+	citation: "Global Leadership Summit",
+	year: "2012",
 	tags: "business",
 	displayable: true
 },
 {
 	quote: "Life is fragile. We're not guaranteed a tomorrow so give it everything you've got.",
 	source: "Tim Cook",
-	year: "2000",
+	year: "2012",
 	tags: "inspirational",
 	displayable: true
 },
@@ -55,11 +57,29 @@ var quotes = [
 	source: "Tony Dungy",
 	tags: "sports",
 	displayable: true
+},
+{
+	quote: "An expert problem solver must be endowed with two incompatible qualities – a restless imagination and a patient pertinacity.",
+	source: "Simon Singh",
+	citation: "Fermat's Last Theorem",
+	yearh: "1997",
+	tags: "mathmatics",
+	displayable: true
+},
+{
+	quote: "A minute of pain is worth a lifetime of glory.",
+	source: "Pete Zamperini",
+	citation: "Unbroken",
+	yearh: "2010",
+	tags: "inspirational",
+	displayable: true
 }
 ];
 
 //---GLOBAL VARIABLES---//
+
 var backgroundColors = ['#4D505B','#CF4858','#16A79D','#80628B','#F4AC42'];
+var timeoutID;
 var counter = 0;
 var lastColor;
 
@@ -76,10 +96,10 @@ function randomColorGenerator() {
 }
 
 // autoSwitch controls how often the quote automatically changes (if the user doesn't press "show new quote"). It's currently set to 10s.
-var timeoutID;
 function autoSwitch(){
 	timeoutID = window.setTimeout(printQuote, 10000);
 }
+
 // resets/clears the tiemout duration
 function resetAutoSwitch(){
 	window.clearTimeout(timeoutID);
