@@ -56,70 +56,66 @@ var quotes = [
 }
 ];
 
-
-autoSwitch(); //activates the autoSwitch function if the user doesn't click the "get new quote" button after 10 seconds.
-
-// randomly generates and returns a quote from the "quotes" object array.
+// function getRandomQuote randomly generates and returns a quote from the "quotes" object array.
 function getRandomQuote() {
     return quotes[Math.floor(Math.random() * quotes.length)];
 }
 
+function randomColorGenerator() {
+		return Math.floor(Math.random() * backgroundColors.length);
+}
 
-var timeoutID;	//create global setTimeout variable
-
-//autoSwitch function changes the quote every 10 seconds.
+// this section adds the functions that control how often the quote automatically changes (if the user doesn't press "show new quote")
+//
+var timeoutID;
 function autoSwitch(){
 	timeoutID = window.setTimeout(printQuote, 10000);
 }
-
-//resetAutoSwitch resets the time interval of the autoSwitch function back to zero.
 function resetAutoSwitch(){
 	window.clearTimeout(timeoutID);
 }
 
 var counter = 0;
 
+var backgroundColors = ['#4D505B','#CF4858','#16A79D','#80628B','#F4AC42'];
+
 function printQuote() {
 
 	resetAutoSwitch();
 
 			//Assigns random number to the displayQuote variable
-			var displayQuote = getRandomQuote();
+			var quoteToDisplay = getRandomQuote();
 
-			if(displayQuote.displayable === true){
+					if(quoteToDisplay.displayable === true){
 
-			    var htmlQuoteString = '<p class="quote">' + displayQuote.quote + '</p>' + '<p class="source">' + displayQuote.source;
+			    var htmlQuoteString = '<p class="quote">' + quoteToDisplay.quote + '</p>' + '<p class="source">' + quoteToDisplay.source;
 
-					if (displayQuote.citation !== undefined) {
-						htmlQuoteString += '<span class="citation">' + displayQuote.citation + '</span>';
+					if (quoteToDisplay.citation !== undefined) {
+						htmlQuoteString += '<span class="citation">' + quoteToDisplay.citation + '</span>';
 					}
-					if (displayQuote.year !== undefined) {
-						htmlQuoteString += '<span class="year">' + displayQuote.year + '</span>';
+					if (quoteToDisplay.year !== undefined) {
+						htmlQuoteString += '<span class="year">' + quoteToDisplay.year + '</span>';
 					}
 					htmlQuoteString += '</p>';
 
 					//Outpoops full string to proper location in HTML
 					document.getElementById('quote-box').innerHTML = htmlQuoteString;
-
-					//Changes the background color on button click. Cycles through five different colors.
-					// defining background colors outside of printQuote() function so that .push and .shift can be used to cycle through colors without the values being reset each time the function is called.
-					var backgroundColors = ['#4D505B', '#CF4858', '#16A79D', '#8068B', '#F4AC42'];
-					document.getElementById('body').style.background = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+					randomColorPicker()
 
 					/*
 					backgroundColors.push(backgroundColors.shift());
 					*/
 
-					displayQuote.displayable = false;
+					quoteToDisplay.displayable = false;
 					counter += 1; //Advances the counter each time the function is run. Once counter is equal to the amount of quotes displayed, all quotes are reset to be displayed again.
 					autoSwitch(); //Automatically picks a new quote and background after 30 seconds
 
-					console.log('PRINTED ' + displayQuote.quote + '.');
-					console.log('COUNTER IS ' + counter);
+				//	console.log('PRINTED ' + quoteToDisplay.quote + '.');
+				//	console.log('COUNTER IS ' + counter);
 
 		} else if (counter < quotes.length){
-				console.log('SKIPPED ' + displayQuote.quote);
-				console.log('COUNTER IS ' + counter);
+				//console.log('SKIPPED ' + quoteToDisplay.quote);
+				//console.log('COUNTER IS ' + counter);
 				printQuote();
 
 		} else {
@@ -127,8 +123,30 @@ function printQuote() {
             quotes[i].displayable = true;
 						counter = 0;
 					}
-			console.log("THE LOOP HAS FINISHED!");
+
 			printQuote();
 		}
 
+}
+
+// calls the printQuote function upon page load
+printQuote();
+
+
+function randomColorGenerator() {
+		return Math.floor(Math.random() * backgroundColors.length);
+}
+
+var lastColor;
+
+function randomColorPicker(){
+
+			var randomColor = randomColorGenerator();
+
+			if(randomColor !== lastColor){
+			document.getElementById('body').style.background = backgroundColors[randomColor];
+			lastColor = randomColor;
+		} else {
+			randomColorPicker();
+		}
 }
