@@ -62,7 +62,7 @@ var quotes = [
 	quote: "An expert problem solver must be endowed with two incompatible qualities – a restless imagination and a patient pertinacity.",
 	source: "Simon Singh",
 	citation: "Fermat's Last Theorem",
-	yearh: "1997",
+	year: "1997",
 	tags: "mathmatics",
 	displayable: true
 },
@@ -70,7 +70,7 @@ var quotes = [
 	quote: "A minute of pain is worth a lifetime of glory.",
 	source: "Pete Zamperini",
 	citation: "Unbroken",
-	yearh: "2010",
+	year: "2010",
 	tags: "inspirational",
 	displayable: true
 }
